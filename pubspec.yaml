@@ -1,0 +1,29 @@
+name: dynamic_tab_bar
+description: "Dynamic Tab Bar is a Flutter package that provides a dynamic tab bar with a scrollable, load more and awesome other functions."
+version: 1.0.0
+repository: https://github.com/hantrungkien/dynamic-tab-bar
+maintainer: KienHT
+
+environment:
+  sdk: '>=2.17.0 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  linked_scroll_controller: ^0.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
