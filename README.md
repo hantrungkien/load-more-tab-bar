@@ -1,20 +1,20 @@
-<h1 align="center">Dynamic Tab Bar</h1>
+<h1 align="center">Load More Tab Bar</h1>
 
-<p align="center">Dynamic Tab Bar is a Flutter package that provides a dynamic tab bar with a scrollable, load more and awesome other functions.</p><br>
+<p align="center">Load More Tab Bar is a Flutter package that provides a dynamic tab bar with a scrollable, load more and awesome other functions.</p><br>
 
-<p align="center"><img src="https://github.com/hantrungkien/dynamic-tab-bar/blob/main/media/screen_record.gif?raw=true" width="256"/></p><br>
+<p align="center"><img src="https://github.com/hantrungkien/load-more-tab-bar/blob/main/media/screen_record.gif?raw=true" width="256"/></p><br>
 
 <p align="center">
   <a href="https://flutter.dev">
     <img src="https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter"
       alt="Platform" />
   </a>
-  <a href="https://pub.dartlang.org/packages/dynamic_tab_bar">
-    <img src="https://img.shields.io/pub/v/dynamic_tab_bar.svg"
+  <a href="https://pub.dartlang.org/packages/load_more_tab_bar">
+    <img src="https://img.shields.io/pub/v/load_more_tab_bar.svg"
       alt="Pub Package" />
   </a>
   <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/github/license/hantrungkien/dynamic-tab-bar"
+    <img src="https://img.shields.io/github/license/hantrungkien/load-more-tab-bar"
       alt="License: MIT" />
   </a>
   <br>
@@ -52,7 +52,7 @@ $ flutter pub get
 Now in your `Dart` code, you can use:
 
 ```dart
-import 'package:load_more_tab_bar/dynamic_tab_bar.dart';
+import 'package:load_more_tab_bar/load_more_tab_bar.dart';
 ```
 
 # Usage

@@ -19,7 +19,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dynamic_tab_bar:
+  load_more_tab_bar:
     # When depending on this package from a real application you should use:
     #   dynamic_tab_bar: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints
