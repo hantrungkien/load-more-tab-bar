@@ -1,4 +1,4 @@
-import 'package:dynamic_tab_bar/dynamic_tab_bar.dart';
+import 'package:dynamic_tab_bar/load_more_tab_bar.dart';
 import 'package:flutter/material.dart';
 
 void main() {

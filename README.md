@@ -28,7 +28,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  dynamic_tab_bar: ^1.0.0
+  load_more_tab_bar: ^1.0.0
 ```
 
 ### 2. Install it
@@ -52,7 +52,7 @@ $ flutter pub get
 Now in your `Dart` code, you can use:
 
 ```dart
-import 'package:dynamic_tab_bar/dynamic_tab_bar.dart';
+import 'package:load_more_tab_bar/dynamic_tab_bar.dart';
 ```
 
 # Usage
