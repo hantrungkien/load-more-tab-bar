@@ -28,7 +28,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  load_more_tab_bar: ^1.0.0
+  load_more_tab_bar: ^1.0.1
 ```
 
 ### 2. Install it
