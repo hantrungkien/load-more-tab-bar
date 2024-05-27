@@ -1,6 +1,6 @@
 <h1 align="center">Load More Tab Bar</h1>
 
-<p align="center">Load More Tab Bar is a Flutter package that provides a dynamic tab bar with a scrollable, load more and awesome other functions.</p><br>
+<p align="center">Load More Tab Bar is a Flutter package that provides a dynamic tab bar with a scrollable, load more, keep scroll position when tabs length is changed and awesome other functions.</p><br>
 
 <p align="center"><img src="https://github.com/hantrungkien/load-more-tab-bar/blob/main/media/screen_record.gif?raw=true" width="256"/></p><br>
 
@@ -28,7 +28,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  load_more_tab_bar: ^1.0.1
+  load_more_tab_bar: ^1.0.2
 ```
 
 ### 2. Install it
