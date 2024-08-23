@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
                   },
                   controller: DynamicTabController.of(context),
                   overlayColor:
-                      MaterialStateProperty.all<Color>(Colors.transparent),
+                      WidgetStateProperty.all<Color>(Colors.transparent),
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   labelStyle: const TextStyle(
                     color: Colors.white,

@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui' show lerpDouble;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ const double _kTextAndIconTabHeight = 72.0;
 
 class _TabStyle extends AnimatedWidget {
   const _TabStyle({
-    super.key,
     required Animation<double> animation,
     required this.selected,
     required this.labelColor,
@@ -49,7 +49,10 @@ class _TabStyle extends AnimatedWidget {
     final TextStyle textStyle = selected
         ? TextStyle.lerp(defaultStyle, defaultUnselectedStyle, animation.value)!
         : TextStyle.lerp(
-            defaultUnselectedStyle, defaultStyle, animation.value)!;
+            defaultUnselectedStyle,
+            defaultStyle,
+            animation.value,
+          )!;
 
     final Color selectedColor =
         labelColor ?? tabBarTheme.labelColor ?? defaults.labelColor!;
@@ -302,9 +305,11 @@ class DynamicTabBar extends StatefulWidget implements PreferredSizeWidget {
 
   final EdgeInsetsGeometry? labelPadding;
 
+  final Alignment? alignment;
+
   final TextStyle? unselectedLabelStyle;
 
-  final MaterialStateProperty<Color?>? overlayColor;
+  final WidgetStateProperty<Color?>? overlayColor;
 
   final MouseCursor? mouseCursor;
 
@@ -331,6 +336,7 @@ class DynamicTabBar extends StatefulWidget implements PreferredSizeWidget {
     this.labelColor,
     this.labelStyle,
     this.labelPadding,
+    this.alignment = Alignment.topCenter,
     this.unselectedLabelColor,
     this.unselectedLabelStyle,
     this.overlayColor,
@@ -537,7 +543,11 @@ class _DynamicTabBarState extends State<DynamicTabBar> {
   int get maxTabIndex => _indicatorPainter!.maxTabIndex;
 
   double _tabScrollOffset(
-      int index, double viewportWidth, double minExtent, double maxExtent) {
+    int index,
+    double viewportWidth,
+    double minExtent,
+    double maxExtent,
+  ) {
     if (!widget.isScrollable) return 0.0;
 
     double tabCenter = _indicatorPainter!.centerOf(index);
@@ -555,24 +565,31 @@ class _DynamicTabBarState extends State<DynamicTabBar> {
     final ScrollPosition? position = _reorderController?.position;
 
     return _tabScrollOffset(
-        index,
-        position?.viewportDimension ?? screenWidth,
-        position?.minScrollExtent ?? 0,
-        position?.maxScrollExtent ?? screenWidth);
+      index,
+      position?.viewportDimension ?? screenWidth,
+      position?.minScrollExtent ?? 0,
+      position?.maxScrollExtent ?? screenWidth,
+    );
   }
 
   void _initialScrollOffset() {
     if (!widget.isScrollable) {
-      _controllers.animateTo(0.01,
-          curve: Curves.linear, duration: const Duration(milliseconds: 1));
+      _controllers.animateTo(
+        0.01,
+        curve: Curves.linear,
+        duration: const Duration(milliseconds: 1),
+      );
     }
   }
 
   void _scrollToCurrentIndex() {
     final double offset = _tabCenteredScrollOffset(_currentIndex!);
 
-    _controllers.animateTo(offset,
-        duration: kTabScrollDuration, curve: Curves.ease);
+    _controllers.animateTo(
+      offset,
+      duration: kTabScrollDuration,
+      curve: Curves.ease,
+    );
   }
 
   void _scrollToControllerValue() {
@@ -658,10 +675,12 @@ class _DynamicTabBarState extends State<DynamicTabBar> {
 
   _calculateTabStripWidth() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       double width = 0;
       List<double> offsets = [0];
-      TextDirection textDirection = Directionality.maybeOf(context)!;
-      for (var key in (textDirection == TextDirection.rtl
+      final textDirection =
+          Directionality.maybeOf(context) ?? TextDirection.ltr;
+      for (final key in (textDirection == TextDirection.rtl
           ? _tabExtendKeys.reversed.toList()
           : _tabExtendKeys)) {
         width += key.currentContext?.size?.width ?? 40;
@@ -720,10 +739,12 @@ class _DynamicTabBarState extends State<DynamicTabBar> {
         if (widget.tabHasTextAndIcon &&
             tab.preferredSize.height == _kTabHeight) {
           if (widget.labelPadding != null || tabBarTheme.labelPadding != null) {
-            adjustedPadding = (widget.labelPadding ?? tabBarTheme.labelPadding!)
-                .add(const EdgeInsets.symmetric(
-              vertical: verticalAdjustment,
-            ));
+            adjustedPadding =
+                (widget.labelPadding ?? tabBarTheme.labelPadding!).add(
+              const EdgeInsets.symmetric(
+                vertical: verticalAdjustment,
+              ),
+            );
           } else {
             adjustedPadding = const EdgeInsets.symmetric(
               vertical: verticalAdjustment,
@@ -808,6 +829,7 @@ class _DynamicTabBarState extends State<DynamicTabBar> {
         enableFeedback: widget.enableFeedback ?? true,
         overlayColor: widget.overlayColor,
         child: Container(
+          alignment: widget.alignment,
           decoration: BoxDecoration(
             borderRadius: widget.tabBorderRadius,
             color: widget.tabBackgroundColor,
@@ -947,7 +969,7 @@ class _TabsDefaultsM3 extends TabBarTheme {
   late final TextTheme _textTheme = Theme.of(context).textTheme;
 
   @override
-  Color? get dividerColor => _colors.surfaceVariant;
+  Color? get dividerColor => _colors.surfaceContainerHighest;
 
   @override
   Color? get indicatorColor => _colors.primary;
@@ -965,27 +987,27 @@ class _TabsDefaultsM3 extends TabBarTheme {
   TextStyle? get unselectedLabelStyle => _textTheme.titleSmall;
 
   @override
-  MaterialStateProperty<Color?> get overlayColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        if (states.contains(MaterialState.hovered)) {
+  WidgetStateProperty<Color?> get overlayColor {
+    return WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+      if (states.contains(WidgetState.selected)) {
+        if (states.contains(WidgetState.hovered)) {
           return _colors.primary.withOpacity(0.08);
         }
-        if (states.contains(MaterialState.focused)) {
+        if (states.contains(WidgetState.focused)) {
           return _colors.primary.withOpacity(0.12);
         }
-        if (states.contains(MaterialState.pressed)) {
+        if (states.contains(WidgetState.pressed)) {
           return _colors.primary.withOpacity(0.12);
         }
         return null;
       }
-      if (states.contains(MaterialState.hovered)) {
+      if (states.contains(WidgetState.hovered)) {
         return _colors.onSurface.withOpacity(0.08);
       }
-      if (states.contains(MaterialState.focused)) {
+      if (states.contains(WidgetState.focused)) {
         return _colors.onSurface.withOpacity(0.12);
       }
-      if (states.contains(MaterialState.pressed)) {
+      if (states.contains(WidgetState.pressed)) {
         return _colors.primary.withOpacity(0.12);
       }
       return null;
@@ -1200,8 +1222,11 @@ class _DynamicTabBarViewState extends State<DynamicTabBarView> {
     if (duration == Duration.zero) {
       _jumpToPage(_currentIndex!);
     } else {
-      await _animateToPage(_currentIndex!,
-          duration: duration, curve: Curves.ease);
+      await _animateToPage(
+        _currentIndex!,
+        duration: duration,
+        curve: Curves.ease,
+      );
     }
     if (mounted) {
       setState(() {
@@ -1238,8 +1263,11 @@ class _DynamicTabBarViewState extends State<DynamicTabBarView> {
     if (duration == Duration.zero) {
       _jumpToPage(_currentIndex!);
     } else {
-      await _animateToPage(_currentIndex!,
-          duration: duration, curve: Curves.ease);
+      await _animateToPage(
+        _currentIndex!,
+        duration: duration,
+        curve: Curves.ease,
+      );
     }
 
     if (mounted) {
@@ -1294,21 +1322,24 @@ class _DynamicTabBarViewState extends State<DynamicTabBarView> {
     if (_debugHasScheduledValidChildrenCountCheck) {
       return true;
     }
-    WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
-      _debugHasScheduledValidChildrenCountCheck = false;
-      if (!mounted) {
-        return;
-      }
-      assert(() {
-        if (_controller!.length != widget.children.length) {
-          throw FlutterError(
-            "Controller's length property (${_controller!.length}) does not match the "
-            "number of children (${widget.children.length}) present in TabBarView's children property.",
-          );
+    WidgetsBinding.instance.addPostFrameCallback(
+      (Duration duration) {
+        _debugHasScheduledValidChildrenCountCheck = false;
+        if (!mounted) {
+          return;
         }
-        return true;
-      }());
-    }, debugLabel: 'TabBarView.validChildrenCountCheck');
+        assert(() {
+          if (_controller!.length != widget.children.length) {
+            throw FlutterError(
+              "Controller's length property (${_controller!.length}) does not match the "
+              "number of children (${widget.children.length}) present in TabBarView's children property.",
+            );
+          }
+          return true;
+        }());
+      },
+      debugLabel: 'TabBarView.validChildrenCountCheck',
+    );
     _debugHasScheduledValidChildrenCountCheck = true;
     return true;
   }
@@ -1361,7 +1392,10 @@ class DynamicPageScrollPhysics extends ScrollPhysics {
   }
 
   double _getTargetPixels(
-      ScrollMetrics position, Tolerance tolerance, double velocity) {
+    ScrollMetrics position,
+    Tolerance tolerance,
+    double velocity,
+  ) {
     double page = _getPage(position);
     if (velocity < -tolerance.velocity) {
       page -= 0.5;
@@ -1445,7 +1479,9 @@ class DynamicPageScrollPhysics extends ScrollPhysics {
 
   @override
   Simulation? createBallisticSimulation(
-      ScrollMetrics position, double velocity) {
+    ScrollMetrics position,
+    double velocity,
+  ) {
     // If we're out of range and not headed back in range, defer to the parent
     // ballistics, which should put us back in range at a page boundary.
     if ((velocity <= 0.0 && position.pixels <= position.minScrollExtent) ||
@@ -1455,8 +1491,13 @@ class DynamicPageScrollPhysics extends ScrollPhysics {
     final Tolerance tolerance = toleranceFor(position);
     final double target = _getTargetPixels(position, tolerance, velocity);
     if (target != position.pixels) {
-      return ScrollSpringSimulation(spring, position.pixels, target, velocity,
-          tolerance: tolerance);
+      return ScrollSpringSimulation(
+        spring,
+        position.pixels,
+        target,
+        velocity,
+        tolerance: tolerance,
+      );
     }
     return null;
   }

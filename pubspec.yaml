@@ -1,6 +1,6 @@
 name: load_more_tab_bar
 description: "Load More Tab Bar is a Flutter package that provides a dynamic tab bar with a scrollable, load more, keep scroll position when tabs length is changed and awesome other functions."
-version: 1.0.2
+version: 1.0.3
 repository: https://github.com/hantrungkien/load-more-tab-bar
 maintainer: KienHT
 

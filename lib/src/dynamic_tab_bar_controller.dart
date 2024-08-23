@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class _DynamicTabControllerScope extends InheritedWidget {
@@ -70,12 +68,13 @@ class _DynamicTabControllerState extends State<DynamicTabController>
 
   @override
   void didUpdateWidget(DynamicTabController oldWidget) {
-    if (oldWidget.length != widget.length) {
-      final currentIndex = _tabController.index;
+    if (oldWidget.length != widget.length ||
+        oldWidget.initialIndex != widget.initialIndex) {
+      final currentIndex = _tabController.previousIndex;
       _tabController.dispose();
       var newIndex = currentIndex;
-      if (currentIndex > widget.length - 1) {
-        newIndex = max(0, widget.length - 1);
+      if (currentIndex != widget.initialIndex) {
+        newIndex = widget.initialIndex;
       }
       _tabController = TabController(
         length: widget.length,
